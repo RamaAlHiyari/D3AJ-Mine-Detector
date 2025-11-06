@@ -10,7 +10,7 @@ Actuation via **two L298N** drivers (4 DC motors) + **3× MG996R** servos for th
 - **Servos:** 3× MG996R (metal gear)
 - **Controller:** PS2 Wireless 2.4 GHz gamepad + receiver
 - **Sensor:** Metal Detector module (signal → analog input)
-- **Power:** Battery pack (مفضل 7.4–12V للمحركات عبر L298N) + 5–6V مستقرة للسيرفوهات
+- **Power:** Battery pack (7.4–12V preferred for motors via L298N) + 5–6V stable for servos
   
   ## Suggested Pin Map (edit to match your wiring)
 **L298N (Left driver)**  
@@ -29,14 +29,14 @@ Actuation via **two L298N** drivers (4 DC motors) + **3× MG996R** servos for th
 - Shoulder → D3  
 - Elbow → D4  
 - Wrist  → D25  
-> *غذّي السيرفوهات من منبع 5–6V منفصل قادر على 2–3A على الأقل، ووصّلي **GND مشترك** مع الأردوينو.*
+
 
 **PS2 Wireless Receiver** (Using the PS2X library) 
 - DATA → D50 (MISO)  
 - CMD  → D51 (MOSI)  
 - ATT  → D52 (SS)  
 - CLK  → D53 (SCK)  
-> يمكن تغيير الأرجل في الكود لو أردتِ.
+
 
 **Metal Detector Sensor**  
 - Signal → A0  
@@ -48,14 +48,17 @@ Actuation via **two L298N** drivers (4 DC motors) + **3× MG996R** servos for th
 - **Libraries:**
   - `PS2X_lib` to control the PS2 controller (Or its alternative) 
   - `Servo.h` (For servos)
-  - (أضف أي مكتبات أخرى تستخدمينها)
 
 ## How to Run
-1. افتحي `firmware/D3AJ_MineDetector.ino` في Arduino IDE.  
-2. Tools → Board: **Arduino Mega 2560** + Port   
-3. ثبتي المكتبات المطلوبة.  
-4. Upload.  
-5. وصّلي مستقبل الـPS2 وشغّلي الذراع؛ جربي حركة العجلات والذراع وكشف المعدن.
+1. Open `firmware/D3AJ_MineDetector.ino` in the Arduino IDE.
+
+2. Tools → Board: **Arduino Mega 2560** + Port
+
+3. Install the required libraries.
+
+4. Upload.
+
+5. Connect the PS2 receiver and power on the controller; test the wheel and controller movement and metal detection.
 
 ## Basic Tests
 - **Motors:** Try each channel on the L298N (front/back).
@@ -68,12 +71,7 @@ Actuation via **two L298N** drivers (4 DC motors) + **3× MG996R** servos for th
 
 - Disconnect the motor power supply from the logic power supply, using a common GND.
 
-- Add a diode or TVS (TVS) if possible to protect the sensor from electrical noise.
-- السيرفوهات تحتاج تيار عالي؛ لا تغذّيها من 5V الخاص بالأردوينو. 
-- افصل تغذية المحركات عن تغذية المنطق، مع **GND مشترك**.  
-- أضف **Diode** أو **TVS** إن أمكن لحماية الحساس من الضوضاء الكهربائي
+- Add a diode or TVS (TVS) if possible to protect the sensor from electrical noise
+  
 ## 🖼 Media
-https://drive.google.com/drive/folders/1zkOhFIgYY8R6_d2tlRjzmbzwSlgLGHVp?usp=sharing
-- أضف صور الروبوت في `docs/.
-
-#ؤخيث 
+https://drive.google.com/drive/folders/1zkOhFIgYY8R6_d2tlRjzmbzwSlgLGHVp?usp=sharing. 
