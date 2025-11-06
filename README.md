@@ -3,6 +3,12 @@
 A wheeled mobile robot that detects buried metal (mines) using a metal-detector sensor.  
 It is driven by 4 DC motors through two L298N drivers and uses three MG996R servos for the arm 
 Control is via a 2.4 GHz PS2 wireless gamepad
+
+
+<img src="2.JPG" alt="D3AJ Mine Detector - Hero Image" width="900">
+
+
+
 ## Introduction
 Landmine detection is very dangerous and still causes thousands of deaths each year.  
 The **D3AJ Buggy** aims to reduce human risk by using a mobile robot that can scan, detect, and report danger zones in a safer way
@@ -47,6 +53,9 @@ The **D3AJ Buggy** aims to reduce human risk by using a mobile robot that can sc
 - GND → GND
 
 
+
+<img src="3.JPG" alt="D3AJ Mine Detector - Hero Image" width="900">
+
 ## Software
 - **Arduino IDE** 2.x  
 - **Libraries:**
@@ -78,28 +87,25 @@ The **D3AJ Buggy** aims to reduce human risk by using a mobile robot that can sc
 - IEEE Spectrum — Husky Robot for Landmine Detection  
 - GeeksforGeeks — Encapsulation in C++  
 - Siegwart, R., Nourbakhsh, I. R., & Scaramuzza, D. *Introduction to Autonomous Mobile Robots* (2nd ed.) Media
-- Google Drive folder:  
-  https://drive.google.com/drive/folders/1zkOhFIgYY8R6_d2tlRjzmbzwSlgLGHVp?usp=sharing
 
 ##  Design By RamaAlhiyari
 Built with **parallel-link suspension** (coil spring + double wishbone) to improve stability, balance, and adaptability on rough terrain.  
-The layout supports quick changes to sensors and motor modules.
+The layout supports quick changes to sensors and motor modules
+<img src="3dD3AJ.png" alt="D3AJ Mine Detector - Hero Image" width="900">
 
 ## Project Credits & Evolution
 This project idea was created by **Rama Al-Hayari**, **Mohammad Ismail**, and **Julnar Radwan** 
+
 **One month later, Rama Al-Hayari & Omar Moutaser extended the system** with **computer vision** and **AI** so the robot can work in a **hybrid mode** (semi-autonomous + manual via controller). The robot now:
 - Displays detection results as **video overlays** on a screen, and  
-- Sends the **danger location** to the expert via a **Telegram message**.
+- Sends the **danger location** to the expert via a **Telegram message**
 
-  ## Media
 
-The repository includes images and a short field-test video.
-
-```html
-<img src="1.JPG" alt="D3AJ Mine Detector - Photo 1" width="900">
-<p>
-  <img src="2.JPG" alt="Photo 2" width="440">
-  <img src="3.JPG" alt="Photo 3" width="440">
-</p>
+ ##  D3AJ Post-Development Demo
+[Download 10s MP4](Field-Test-10s.mp4)
+  
+## Media 
+- Google Drive folder:  
+  https://drive.google.com/drive/folders/1zkOhFIgYY8R6_d2tlRjzmbzwSlgLGHVp?usp=sharing
 
 
