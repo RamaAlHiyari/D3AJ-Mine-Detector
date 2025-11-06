@@ -10,7 +10,7 @@ Actuation via **two L298N** drivers (4 DC motors) + **3× MG996R** servos for th
 - **Servos:** 3× MG996R (metal gear)
 - **Controller:** PS2 Wireless 2.4 GHz gamepad + receiver
 - **Sensor:** Metal Detector module (signal → analog input)
-- **Power:** Battery pack (7.4–12V preferred for motors via L298N) + 5–6V stable for servos
+- **Power:** Battery pack (7.4–12V preferred for motors via L298N) + 5–6V stable for servos)
   
   ## Suggested Pin Map (edit to match your wiring)
 **L298N (Left driver)**  
