@@ -1,285 +1,79 @@
-# D3AJ-Mine-Detector
-# Wheeled mobile robot with metal detector sensor controlled by an arm to detect metals (Mine) using Arduino Mega
-# Code :
-/*
+# D3AJ – Mine Detector (Arduino Mega)
 
-       crocodile buggy 
- • our idea:
-    wheeled mobile robot with metal detector sensor controlled by arm to detect metals (Mine)
- 
- • Electronic parts
-    1)  Arduino maga 1 
-    2)  DC motors 4
-    3)  wheels  8 
-    4)  L298N motor driver 2
-    5)  servo motor MG955 3 (180 degree)
-    6)  metal detector 
-    7)  programmable ps2 controller 
-    8)  9V battery (Arduino)
-    9)  5V battery (servos)
-    10) 11.1V battery (DC motors) 
- 
- • pins decumentation:
-    • Servos:
-        1) base servo : 13
-        2) joint1 servo : 12
-        3) joint2 servo : 11
-        3) end effector : 10
-    • Ps2 controllar:
-        1) data : 9
-        2) command : 8
-        3) vibration : -
-        4) GND : GND
-        5) power : 3.3v or 5v
-        6) attention : 7 
-        7) clock : 6
-        8) no connection : -
-        9) Acknowledge : -
-    • motors:
-      • front: 
-        1) Left:
-          Enable : 5
-          IN1 : 22
-          IN2 : 24
-        2) Right:
-          Enable: 4
-          IN3 : 26 
-          IN4 : 28
-     • Back:
-        1)Right:
-          Enable: 3
-          IN1 : 36
-          IN2 : 34
-        4)Left:
-         Enable: 2
-          IN3 : 32
-          IN4 : 30
-    • sersor:
-      V+ : 5v
-      V- : GND
-  • for movement: 
-  1) arm
-      Key       move   type
-  PSB_PAD_UP    UP     Analog
-  PSB_PAD_DOWN  DOWN   Analog
-  PSB_PAD_LEFT  LEFT   Analog
-  PSB_PAD_RIGHT RIGHT  Analog 
-  2)motor movement
-   Forword =>        X = 128  ,  Y = 0   
-   Forword_left =>   X = 0    ,  Y = 0   
-   Forword_Right =>  X = 255  ,  Y = 0   
-   Left =>           X = 0    ,  Y = 128 
-   Right =>          X = 255  ,  Y = 128  
-   Backword =>       X = 128  ,  Y = 255  
-   Backword_left =>  X = 0    ,  Y = 255 
-   Backword_Right => X = 255  ,  Y = 255 
-*/
-#include <Servo.h>
-#include <PS2X_lib.h>
+Wheeled mobile robot to detect metal (mines) using a **Metal Detector sensor**, controlled over **PS2 Wireless** gamepad.  
+Actuation via **two L298N** drivers (4 DC motors) + **3× MG996R** servos for the arm.
 
-class motor {
-private:
-  int speed;  //speed can be  between [0 , 255]
-  byte first_pin, second_pin, Enable;
-  // first_pin and second_pin will get the pins IN1 , IN2 , IN3 , IN4
+## Hardware (Bill of Materials)
+- **MCU:** Arduino Mega 2560
+- **Motor Drivers:** 2× L298N Dual H-Bridge
+- **Motors:** 4× DC gear motors (3–6V)
+- **Servos:** 3× MG996R (metal gear)
+- **Controller:** PS2 Wireless 2.4 GHz gamepad + receiver
+- **Sensor:** Metal Detector module (signal → analog input)
+- **Power:** Battery pack (مفضل 7.4–12V للمحركات عبر L298N) + 5–6V مستقرة للسيرفوهات
+  
+  ## Suggested Pin Map (edit to match your wiring)
+**L298N (Left driver)**  
+- ENA → D5 (PWM)  
+- IN1 → D6, IN2 → D7  
+- IN3 → D8, IN4 → D9  
+- ENB → D10 (PWM)  
 
-public:
-  //a contractor will help holding the pins for each motor
-  motor(int speed, byte Enable, byte first_pin, byte second_pin) {
-    this->speed = speed;
-    this->Enable = Enable;
-    this->first_pin = first_pin;
-    this->second_pin = second_pin;
-    pinMode(Enable, OUTPUT);
-    pinMode(first_pin, OUTPUT);
-    pinMode(second_pin, OUTPUT);
-  }
-  inline void speed_control(int speed) {
-    this->speed = speed;
-  }
-  void Backword() {
-    analogWrite(Enable, speed);
-    digitalWrite(first_pin, HIGH);
-    digitalWrite(second_pin, LOW);
-  }
+**L298N (Right driver)**  
+- ENA → D11 (PWM)  
+- IN1 → D12, IN2 → D13  
+- IN3 → D22, IN4 → D23  
+- ENB → D24 (PWM)
 
+**Servos (MG996R)**  
+- Shoulder → D3  
+- Elbow → D4  
+- Wrist  → D25  
+> *غذّي السيرفوهات من منبع 5–6V منفصل قادر على 2–3A على الأقل، ووصّلي **GND مشترك** مع الأردوينو.*
 
+**PS2 Wireless Receiver** (Using the PS2X library) 
+- DATA → D50 (MISO)  
+- CMD  → D51 (MOSI)  
+- ATT  → D52 (SS)  
+- CLK  → D53 (SCK)  
+> يمكن تغيير الأرجل في الكود لو أردتِ.
 
-  void Forword() {
-    analogWrite(Enable, speed);
-    digitalWrite(first_pin, LOW);
-    digitalWrite(second_pin, HIGH);
-  }
+**Metal Detector Sensor**  
+- Signal → A0  
+- VCC → 5V (According to the model) 
+- GND → GND
 
+## Software
+- Arduino IDE 2.x  
+- **Libraries:**
+  - `PS2X_lib` to control the PS2 controller (Or its alternative) 
+  - `Servo.h` (For servos)
+  - (أضف أي مكتبات أخرى تستخدمينها)
 
+## How to Run
+1. افتحي `firmware/D3AJ_MineDetector.ino` في Arduino IDE.  
+2. Tools → Board: **Arduino Mega 2560** + Port   
+3. ثبتي المكتبات المطلوبة.  
+4. Upload.  
+5. وصّلي مستقبل الـPS2 وشغّلي الذراع؛ جربي حركة العجلات والذراع وكشف المعدن.
 
+## Basic Tests
+- **Motors:** Try each channel on the L298N (front/back).
+- **Servos:** Sweep 0↔180° for each joint.  
+- **Detector:** Read `analogRead(A0)` via Serial Monitor and check for a change in value near the metal
 
-  inline void stop() {
-    analogWrite(Enable, 0);
-  }
-};
- 
-//motor(speed, Enable , first_pin, second_pin);
-motor front_L(255,5, 26, 28), front_R(255,4, 22, 24);
-motor back_L(255,3, 34, 36 ), back_R(255,  2, 30, 32);
-//Servo
-Servo base_servo, joint1_servo, joint2_servo, end_effector;
-//controllr
-PS2X ps2x;
-byte error;
+## Power & Safety
+## ⚠️ Power & Safety
+- Servos require high current; do not power them from the Arduino's 5V supply.
 
-void stop_all() {
-  front_L.stop();
-  front_R.stop();
-  back_L.stop();
-  back_R.stop();
-}
-void setup() {
-  Serial.begin(9600);
-  //------------------------------------------------
-  base_servo.attach(13);
-  joint1_servo.attach(12);
-  joint2_servo.attach(11);
-  end_effector.attach(10);
-  //------------------------------------------------
-  //ps2x.config_gamepad(clock, command, attention, data, Pressures? Rumble?);
-  error = ps2x.config_gamepad(6, 8, 7, 9, false, false);
+- Disconnect the motor power supply from the logic power supply, using a common GND.
 
-  if (error == 0)
-    Serial.println("Found Controller, configured successful.");
-  else if (error == 1)
-    Serial.println("No controller found.");
-  else if (error == 2)
-    Serial.println("Controller found but not accepting commands.");
-  else if (error == 3)
-    Serial.println("Controller refusing to enter Pressures mode, may not support it.");
-}
-void loop() {
-  ps2x.read_gamepad();
-  static byte base_angle = 90, joint1_angle = 90, joint2_angle = 90, end_effector_angle = 90;
-  char *buffer = new char[10];
+- Add a diode or TVS (TVS) if possible to protect the sensor from electrical noise.
+- السيرفوهات تحتاج تيار عالي؛ لا تغذّيها من 5V الخاص بالأردوينو. 
+- افصل تغذية المحركات عن تغذية المنطق، مع **GND مشترك**.  
+- أضف **Diode** أو **TVS** إن أمكن لحماية الحساس من الضوضاء الكهربائي
+## 🖼 Media
+https://drive.google.com/drive/folders/1zkOhFIgYY8R6_d2tlRjzmbzwSlgLGHVp?usp=sharing
+- أضف صور الروبوت في `docs/.
 
-
-  if (ps2x.Button(PSB_START)) {
-    base_angle = 90, joint1_angle = 90, joint2_angle = 90;
-    base_servo.write(base_angle);
-    delay(500);
-    joint1_servo.write(joint1_angle);
-    delay(500);
-    joint2_servo.write(joint2_angle);
-  } else if (ps2x.Button(PSB_PAD_DOWN)) {
-    Serial.println("Arm UP J1!!");
-    if (joint1_angle == 90)
-      return;
-    joint1_servo.write(joint1_angle -= 5);
-    delay(50);
-  } else if (ps2x.Button(PSB_PAD_UP)) {
-    Serial.println("Arm DOWN J1!!");
-    if (joint1_angle == 180)
-      return;
-    joint1_servo.write(joint1_angle += 5);
-    delay(50);
-  } else if (ps2x.Button(PSB_PAD_RIGHT)) {
-    Serial.println("Arm Right!!");
-    if (base_angle == 0)
-      return;
-    base_servo.write(base_angle -= 5);
-    delay(50);
-  } else if (ps2x.Button(PSB_PAD_LEFT)) {
-    Serial.println("Arm LEFT!!");
-    if (base_angle == 180)
-      return;
-    base_servo.write(base_angle += 5);
-    delay(50);
-  } else if (ps2x.Button(PSB_BLUE)) {
-    Serial.println("Arm UP J2!!");
-    if (joint2_angle == 90)
-      return;
-    joint2_servo.write(joint2_angle += 5);
-    delay(50);
-  } else if (ps2x.Button(PSB_GREEN)) {
-    if (joint2_angle == 0)
-      return;
-    joint2_servo.write(joint2_angle -= 5);
-    delay(50);
-  } else if (ps2x.Button(PSB_PINK)) {
-    if (end_effector_angle == 90)
-      return;
-    end_effector.write(end_effector_angle += 5);
-    delay(50);
-  } else if (ps2x.Button(PSB_RED)) {
-    if (end_effector_angle == 0)
-      return;
-    end_effector.write(end_effector_angle -= 5);
-    delay(50);
-  } else if (ps2x.Button(PSB_R1)) {
-    byte X = (ps2x.Analog(PSS_LX));
-    byte Y = (ps2x.Analog(PSS_LY));
-    sprintf(buffer, "X:%d Y:%d", X, Y);
-    Serial.println(buffer);
-    //------------------------------------------
-    if (X == 128 && Y == 0) {  //Forword
-      back_R.Forword();
-      front_L.Forword();
-      front_R.Forword();
-      back_L.Forword();
-     
-      delay(50);
-      stop_all();
-    } else if (X == 0 && Y == 0) {  //  Forword Left
-      front_L.Forword();
-      front_R.Backword();
-      back_L.Forword();
-      back_R.Backword();
-      delay(50);
-      stop_all();
-    } else if (X == 255 && Y == 0) {  //  Forword Right
-      front_L.Backword();
-      front_R.Forword();
-      back_L.Backword();
-      back_R.Forword();
-      delay(50);
-      stop_all();
-    } else if (X == 0 && Y == 128) {  // Left
-      front_L.Backword();
-      front_R.Forword();
-      back_L.Backword();
-      back_R.Forword();
-      delay(50);
-      stop_all();
-    } else if (X == 255 && Y == 128) {  // Right
-      front_L.Forword();
-      front_R.Backword();
-      back_L.Forword();
-      back_R.Backword();
-      delay(50);
-      stop_all();
-    } else if (X == 128 && Y == 255) {  // Backword
-      front_L.Backword();
-      front_R.Backword();
-      back_L.Backword();
-      back_R.Backword();
-      delay(50);
-      stop_all();
-    } else if (X == 0 && Y == 255) {  // Backword Left
-      front_L.Backword();
-      front_R.Forword();
-      back_L.Backword();
-      back_R.Forword();
-      delay(50);
-      stop_all();
-    } else if (X == 255 && Y == 255) {  // Backword Right
-      front_L.Forword();
-      front_R.Backword();
-      back_L.Forword();
-      back_R.Backword();
-      delay(50);
-      stop_all();
-    }
-  }
-  delay(50);
-  stop_all();
-  delete[] buffer;
-}
-##ؤ#
 #ؤخيث 
