@@ -5,7 +5,7 @@ It is driven by 4 DC motors through two L298N drivers and uses three MG996R serv
 Control is via a 2.4 GHz PS2 wireless gamepad
 
 
-<img src="2.JPG" alt="D3AJ Mine Detector - Hero Image" width="900">
+<img src="docs/media/2.JPG" alt="D3AJ Mine Detector - Hero Image" width="900">
 
 
 
@@ -54,7 +54,7 @@ The **D3AJ Buggy** aims to reduce human risk by using a mobile robot that can sc
 
 
 
-<img src="3.JPG" alt="D3AJ Mine Detector - Hero Image" width="900">
+<img src="docs/media/3.JPG" alt="D3AJ Mine Detector - Hero Image" width="900">
 
 ## Software
 - **Arduino IDE** 2.x  
@@ -91,7 +91,7 @@ The **D3AJ Buggy** aims to reduce human risk by using a mobile robot that can sc
 ##  Design By RamaAlhiyari
 Built with **parallel-link suspension** (coil spring + double wishbone) to improve stability, balance, and adaptability on rough terrain.  
 The layout supports quick changes to sensors and motor modules
-<img src="3dD3AJ.png" alt="D3AJ Mine Detector - Hero Image" width="900">
+<img src="docs/media/3dD3AJ.png" alt="D3AJ Mine Detector - Hero Image" width="900">
 
 ## Project Credits & Evolution
 This project idea was created by **Rama Al-Hayari**, **Mohammad Ismail**, and **Julnar Radwan** 
